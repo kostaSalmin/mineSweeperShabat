@@ -1,8 +1,8 @@
 'use strict'
 
 var gLevel = {
-    size: 4,
-    mines: 2
+    size: 8,
+    mines: 15
 }
 
 var gBoard = {
@@ -36,7 +36,7 @@ var glivesCounter = 3
 function init() {
     gGameBoard = createBoard()
     renderBoard(gGameBoard)
-    setMinesNegsCount()
+
     elRestart.innerText = '😇'
     gFlagsCounter = gLevel.mines
     document.querySelector('.counter').innerText = gFlagsCounter
@@ -68,12 +68,11 @@ function cellClicked(event, i, j) {
 
     }
     if (!gGame.isOn) {
+        setMinesNegsCount()
         startTimer()
-
         gGame.isOn = true;
     }
 
-    console.table(gGameBoard);
     checkGameOver(gGameBoard[i][j])
 }
 
@@ -123,14 +122,9 @@ function countMineAround(rowIdx, colIdx) {
             if (i === rowIdx && j === colIdx) continue;
             var cell = gGameBoard[i][j];
             if (cell.isMine) counter++
-
         }
     }
-
-    if (counter === 0) {
-
-        expandShown(rowIdx, colIdx);
-    }
+    if (counter === 0) expandShown(rowIdx, colIdx);
     return counter;
 }
 
@@ -147,7 +141,7 @@ function expandShown(rowIdx, colIdx) {
             var elCell = document.querySelector('.cell-' + i + '-' + j)
             elCell.style.backgroundColor = "gray"
             elCell.innerText = gMineCounterAround
-            if (gMineCounterAround === 0) elCell.innerText = ''
+            if (gMineCounterAround === 0) elCell.style.color = 'blue'
             if (gMineCounterAround === 1) elCell.style.color = 'green'
             if (gMineCounterAround === 2) elCell.style.color = 'orange'
 
